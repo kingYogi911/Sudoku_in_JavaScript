@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sudoku Solver</title>
+	<style type="text/css">
+
+		#body{
+			height: 570px;
+			border:10px solid blue;
+			background-color: rgb(240,240,255);
+		}
+		* input{
+			width: 20px;
+			height: 20px;
+			border: 0.2px solid black;
+		}
+		#inp_sdk{
+			border: 2px solid black;
+			margin-left: 50px;
+		}
+		#black_row{
+			height: 4px;
+		}
+		#blank_col{
+			height: 20px;
+			width: 4px;
+		}
+		#inp{
+			width: 40%;
+			margin: auto;
+			padding-top: 100px;
+		}
+		#sb{
+			background-color: blue;
+			color: white;
+			margin: 10px 0 0 50px;
+			align-self: left;
+		}
+		#rs{
+			background-color: green;
+			color: white;
+			margin-top: 10px;
+			margin-left: 155px;
+		}
+		#footer{
+			text-align: center;
+		}
+	</style>
+	<script type="text/javascript">
+		var arr=new Array(9);
+		var stk=[];
+		for(var a=0;a<9;a++)
+			arr[a]=new Array(9);
+		function inputToArr(){
+			var patt=/^[1-9]$/;
+			for(var i=0;i<9;i++){
+				for(var j=0;j<9;j++){
+					var x=document.getElementById('c_'+i+j).value;
+					if(!patt.test(x)){x=0;}
+					arr[i][j]=x;
+				}
+			}
+			solve();
+		}
+		function ArrtoOut(){
+			for(var i=0;i<9;i++){
+				for(var j=0;j<9;j++){
+					document.getElementById('c_'+i+j).value=arr[i][j];
+				}
+			}			
+		}
+		function isValid(i,j,x){
+			var flag=isValidInRow(i,x)&&isValidInCol(j,x)&&isValidInBox(i,j,x);
+			return flag;
+		}
+		function isValidInRow(i,x){
+			for(var a=0;a<9;a++)
+				{if(arr[i][a]==x) 
+					return false;
+				}
+			return true;
+		}
+		function isValidInCol(j,x){
+			for(var a=0;a<9;a++)
+				if(arr[a][j]==x) return false;
+			return true;
+		}
+		function isValidInBox(i,j,x){
+			var R=Math.floor(i/3)*3;
+			var C=Math.floor(j/3)*3;
+			for(var r=R;r<R+3;r++){
+				for(var c=C;c<C+3;c++){
+				if(arr[r][c]==x) return false;					
+				}
+			}
+			return true;
+		}
+		function solve(){
+			var x=1;
+			for(var i=0;i<9;i++){
+				for(var j=0;j<9;j++){
+					if(arr[i][j]==0){
+						var flag=false;
+						for(;x<=9;x++){
+							if(isValid(i,j,x)){
+								arr[i][j]=x;
+								stk.push(i);
+								stk.push(j);
+								stk.push(x);
+								x=1;
+								flag=true;
+								break;
+							}
+						}
+						if(flag==false){
+						x=stk.pop()+1;
+						j=stk.pop()-1;
+						i=stk.pop();
+						arr[i][j+1]=0;	
+						}
+					}
+				}
+			}
+			ArrtoOut();
+		}
+		function reset(){
+			location.reload(true);
+		}
+	</script>
+</head>
+<body>
+<div id="body">
+	<div id="inp">
+		<form >
+			<table id="inp_sdk">
+				<tr>
+					<td><input id="c_00"></td>
+					<td><input id="c_01"></td>
+					<td><input id="c_02"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_03"></td>
+					<td><input id="c_04"></td>
+					<td><input id="c_05"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_06"></td>
+					<td><input id="c_07"></td>
+					<td><input id="c_08"></td>
+				</tr>
+				<tr>
+					<td><input id="c_10"></td>
+					<td><input id="c_11"></td>
+					<td><input id="c_12"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_13"></td>
+					<td><input id="c_14"></td>
+					<td><input id="c_15"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_16"></td>
+					<td><input id="c_17"></td>
+					<td><input id="c_18"></td>
+				</tr>
+				<tr>
+					<td><input id="c_20"></td>
+					<td><input id="c_21"></td>
+					<td><input id="c_22"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_23"></td>
+					<td><input id="c_24"></td>
+					<td><input id="c_25"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_26"></td>
+					<td><input id="c_27"></td>
+					<td><input id="c_28"></td>
+				</tr>
+				<tr id=blank_row>
+					<td colspan="9"> </td>
+				</tr>
+				<tr>
+					<td><input id="c_30"></td>
+					<td><input id="c_31"></td>
+					<td><input id="c_32"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_33"></td>
+					<td><input id="c_34"></td>
+					<td><input id="c_35"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_36"></td>
+					<td><input id="c_37"></td>
+					<td><input id="c_38"></td>
+				</tr>
+				<tr>
+					<td><input id="c_40"></td>
+					<td><input id="c_41"></td>
+					<td><input id="c_42"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_43"></td>
+					<td><input id="c_44"></td>
+					<td><input id="c_45"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_46"></td>
+					<td><input id="c_47"></td>
+					<td><input id="c_48"></td>
+				</tr>
+				<tr>
+					<td><input id="c_50"></td>
+					<td><input id="c_51"></td>
+					<td><input id="c_52"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_53"></td>
+					<td><input id="c_54"></td>
+					<td><input id="c_55"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_56"></td>
+					<td><input id="c_57"></td>
+					<td><input id="c_58"></td>
+				</tr>
+				<tr id=blank_row>
+					<td colspan="9"> </td>
+				</tr>
+				<tr>
+					<td><input id="c_60"></td>
+					<td><input id="c_61"></td>
+					<td><input id="c_62"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_63"></td>
+					<td><input id="c_64"></td>
+					<td><input id="c_65"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_66"></td>
+					<td><input id="c_67"></td>
+					<td><input id="c_68"></td>
+				</tr>
+				<tr>
+					<td><input id="c_70"></td>
+					<td><input id="c_71"></td>
+					<td><input id="c_72"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_73"></td>
+					<td><input id="c_74"></td>
+					<td><input id="c_75"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_76"></td>
+					<td><input id="c_77"></td>
+					<td><input id="c_78"></td>
+				</tr>
+				<tr>
+					<td><input id="c_80"></td>
+					<td><input id="c_81"></td>
+					<td><input id="c_82"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_83"></td>
+					<td><input id="c_84"></td>
+					<td><input id="c_85"></td>
+					<td id="blank_col"></td>
+					<td><input id="c_86"></td>
+					<td><input id="c_87"></td>
+					<td><input id="c_88"></td>
+				</tr>
+			</table>
+		</form>
+		<button id="sb" onclick="inputToArr();">submit</button>
+    	<button id="rs" onclick="reset()">reset</button>
+    </div>
+</div>
+    <div id="footer" >
+    	Brought in Existance by KingYogi
+    </div>
+</body>
+</html>
